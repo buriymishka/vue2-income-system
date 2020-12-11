@@ -31,7 +31,7 @@ app.use(routerTokens)
 
 app.use('/css', express.static(path.resolve(__dirname, '../dist/css')));
 app.use('/js', express.static(path.resolve(__dirname, '../dist/js')));
-app.use(express.favicon(path.join(__dirname, 'dist', 'favicon.ico')));
+app.use('/img', express.static(path.resolve(__dirname, '../dist/img')));
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, '../dist/index.html'));
 });
