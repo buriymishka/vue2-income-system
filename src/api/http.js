@@ -4,7 +4,7 @@ import store from '@/store'
 import { getAC, setAC } from '@/tokens/index'
 
 const instance = axios.create({
-  baseURL: 'http://localhost:3000/api/',
+  baseURL: 'https://mihail-vue-crm.herokuapp.com/api/', // http://localhost:3000/api/
   withCredentials: true
 })
 
