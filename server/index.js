@@ -8,7 +8,7 @@ const routerCategories = require('./routes/category.route')
 const routerRecords = require('./routes/record.route')
 const routerTokens = require('./routes/tokens.routes')
 const app = express()
-const port = process.env.PORT || 80
+const port = process.env.PORT || 3000
 const hostname = process.env.HOST || 'localhost'
 
 app.use(bodyParser.json())
