@@ -37,5 +37,5 @@ app.get('*', (req, res) => {
 });
 
 app.listen(port, hostname, () => {
-
+  console.log('server started')
 })
