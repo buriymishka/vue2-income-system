@@ -3,9 +3,9 @@ let AI = 0
 
 export default {
   namespaced: true,
-  state: {
+  state: () => ({
     alerts: []
-  },
+  }),
   getters: {
     alerts: state => state.alerts
   },

@@ -2,9 +2,9 @@ import * as recordsAPI from '@/api/records'
 
 export default {
   namespaced: true,
-  state: {
+  state: () => ( {
     records: null
-  },
+  }),
   getters: {
     records: state => state.records
   },

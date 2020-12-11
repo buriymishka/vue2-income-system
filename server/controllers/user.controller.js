@@ -30,7 +30,6 @@ module.exports.signIn = async (req, res) => {
       res.status(404).json({ message: 'WrongEmailOrPassword' })
     }
   } catch (e) {
-    console.log(e)
     res.status(500).json(e)
   }
 }
@@ -71,7 +70,6 @@ module.exports.signUp = async (req, res) => {
 
     res.json({ name: user.name, email: user.email, locale: user.locale, accessToken: generatedAccessToken })
   } catch (e) {
-    console.log(e)
     res.status(500).json(e)
   }
 }
@@ -96,7 +94,6 @@ module.exports.update = async (req, res) => {
       res.json(newUser.rows[0])
     }
   } catch (e) {
-    console.log(e)
     res.status(500).json(e)
   }
 }
@@ -116,7 +113,6 @@ module.exports.recover = async (req, res) => {
       res.status(404).json({ message: 'NoUserWithThisEmail' })
     }
   } catch (e) {
-    console.log(e)
     res.status(500).json(e)
   }
 
@@ -135,7 +131,6 @@ module.exports.loadIncome = async (req, res) => {
     })
     res.json({ labels, values })
   } catch (e) {
-    console.log(e)
     res.status(500).json(e)
   }
 
@@ -154,7 +149,6 @@ module.exports.loadOutcome = async (req, res) => {
     })
     res.json({ labels, values })
   } catch (e) {
-    console.log(e)
     res.status(500).json(e)
   }
 

@@ -3,14 +3,14 @@ const auth = require('../middleware/auth')
 const { create, load, loadById, remove, update } = require('../controllers/record.controller')
 const router = new Router()
 
-router.post('/api/record/create', auth, create)
+router.post('/api/record', auth, create)
 
-router.get('/api/record/load', auth, load)
+router.get('/api/record', auth, load)
 
-router.get('/api/record/loadById/:id', auth, loadById)
+router.get('/api/record/:id', auth, loadById)
 
-router.put('/api/record/update', auth, update)
+router.put('/api/record', auth, update)
 
-router.delete('/api/record/remove/:id', auth, remove)
+router.delete('/api/record/:id', auth, remove)
 
 module.exports = router

@@ -9,8 +9,8 @@ import categories from './categories';
 import alerts from './alerts';
 
 export default new Vuex.Store({
-  state: {
-  },
+  state: () => ( {
+  }),
   getters: {
   },
   mutations: {

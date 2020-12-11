@@ -9,9 +9,9 @@ router.post('/api/user/signUp', signUp)
 
 router.post('/api/user/recover', recover)
 
-router.get('/api/user/load', auth, load)
+router.get('/api/user', auth, load)
 
-router.put('/api/user/update', auth, update)
+router.put('/api/user', auth, update)
 
 router.get('/api/user/loadIncome', auth, loadIncome)
 

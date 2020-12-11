@@ -45,5 +45,6 @@
   "HowDidYouDoThat": "How did you do that?",
   "EmailAlreadyExists": "Email already exists",
   "NoUserWithThisEmail": "No user with this email",
-  "YouMustAuthenticateFirst": "You must authenticate first"
+  "YouMustAuthenticateFirst": "You must authenticate first",
+  "Request failed with status code 500": "Server error. Try later"
 }

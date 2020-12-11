@@ -13,11 +13,11 @@ export async function recover(data) {
 }
 
 export async function load() {
-  return await server.get('user/load')
+  return await server.get('user')
 }
 
 export async function update(data) {
-  return await server.put('user/update', data)
+  return await server.put('user', data)
 }
 
 export async function loadIncome() {

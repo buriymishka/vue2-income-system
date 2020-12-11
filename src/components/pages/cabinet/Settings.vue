@@ -66,9 +66,11 @@
   </v-container>
 </template>
 <script>
+import { mapGetters } from 'vuex'
 import mixinParser from "@/mixins/parser";
 import AppLoader from "@/components/loader";
 import loc from "@/filters/localize";
+
 export default {
   mixins: [mixinParser],
   components: {
@@ -106,6 +108,7 @@ export default {
     };
   },
   computed: {
+    ...mapGetters('user', ['user']),
     comparePasswords() {
       return () => this.password === this.rePassword || loc('PasswordMustMatch');
     },
@@ -113,9 +116,9 @@ export default {
 
   methods: {
     setupForm() {
-      this.name = this.$store.getters["user/user"].name;
-      this.email = this.$store.getters["user/user"].email;
-      this.locale = this.$store.getters["user/user"].locale;
+      this.name = this.user.name;
+      this.email = this.user.email;
+      this.locale = this.user.locale;
     },
     async formHandler() {
       this.name = this.MixinParser(this.name);
@@ -138,9 +141,6 @@ export default {
     },
   },
   async mounted() {
-    if (!this.$store.getters["user/user"]) {
-      await this.$store.dispatch("user/load");
-    }
     this.setupForm();
     this.loader = false;
   },

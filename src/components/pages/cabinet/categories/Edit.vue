@@ -2,7 +2,7 @@
   <div>
     <v-container>
       <router-link :to="{ name: 'categoriesList' }">
-        <v-btn class="mb-4">{{ 'CategoriesList' | loc }}</v-btn>
+        <v-btn class="mb-4">{{ "CategoriesList" | loc }}</v-btn>
       </router-link>
       <AppLoader v-if="loader" />
       <v-form
@@ -26,7 +26,7 @@
           color="primary"
           :loading="btnLoading"
           class="mr-4 mt-4"
-          >{{ 'Update' | loc }}</v-btn
+          >{{ "Update" | loc }}</v-btn
         >
       </v-form>
     </v-container>
@@ -34,6 +34,7 @@
 </template>
 
 <script>
+import { mapGetters, mapActions } from "vuex";
 import mixinParser from "@/mixins/parser";
 import AppLoader from "@/components/loader";
 import loc from "@/filters/localize";
@@ -48,19 +49,23 @@ export default {
       valid: true,
       loader: true,
       title: "",
-      titleRules: [(v) => v.length >= 2 || loc('AtLeast2Characters')],
+      titleRules: [(v) => v.length >= 2 || loc("AtLeast2Characters")],
       btnLoading: false,
     };
   },
+  computed: {
+    ...mapGetters("categories", ["currentCategory", "categories"]),
+  },
 
   methods: {
+    ...mapActions("categories", ["load", "loadById", "update"]),
     async formHandler() {
       this.title = this.MixinParser(this.title);
       this.$nextTick(async () => {
         if (this.$refs.form.validate()) {
           this.btnLoading = true;
 
-          let res = await this.$store.dispatch("categories/update", {
+          let res = await this.update({
             id: this.$route.params.id,
             title: this.title,
           });
@@ -71,12 +76,12 @@ export default {
     },
   },
   async mounted() {
-    await this.$store.dispatch("categories/loadById", this.$route.params.id);
-    if (this.$store.getters["categories/currentCategory"]) {
-      this.title = this.$store.getters["categories/currentCategory"].title;
+    await this.loadById(this.$route.params.id);
+    if (this.currentCategory) {
+      this.title = this.currentCategory.title;
     }
-    if (!this.$store.getters["categories/categories"]) {
-      await this.$store.dispatch("categories/load");
+    if (!this.categories) {
+      await this.load();
     }
     this.loader = false;
   },

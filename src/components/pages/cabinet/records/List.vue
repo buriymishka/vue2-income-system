@@ -42,6 +42,7 @@
 </template>
 
 <script>
+import { mapGetters, mapActions } from "vuex";
 import AppLoader from "@/components/loader";
 import loc from '@/filters/localize'
 export default {
@@ -52,7 +53,6 @@ export default {
     return {
       loc,
       loader: true,
-      categories: [],
       search: "",
       headers: [
         { text: loc('Title'), value: "title" },
@@ -64,9 +64,8 @@ export default {
     };
   },
   computed: {
-    records() {
-      return this.$store.getters["records/records"];
-    },
+    ...mapGetters("records", ["records"]),
+    ...mapGetters("categories", ["categories"]),
     categoryTitle() {
       return (id) => {
         let cat = this.categories.find((category) => category.id == id);
@@ -75,6 +74,8 @@ export default {
     },
   },
   methods: {
+    ...mapActions("records", ["load", "remove"]),
+    ...mapActions("categories", { categoriesLoad: "load" }),
     editHandler(id) {
       this.$router.push({ name: "recordsEdit", params: { id } });
     },
@@ -83,18 +84,17 @@ export default {
         title: "Warning",
       });
       if (res) {
-        this.$store.dispatch("records/remove", id);
+        this.remove(id);
       }
     },
   },
   async mounted() {
-    if (!this.$store.getters["records/records"]) {
-      await this.$store.dispatch("records/load");
+    if (!this.records) {
+      await this.load();
     }
-    if (!this.$store.getters["categories/categories"]) {
-      await this.$store.dispatch("categories/load");
+    if (!this.categories) {
+      await this.categoriesLoad();
     }
-    this.categories = this.$store.getters["categories/categories"];
     this.loader = false;
   },
 };

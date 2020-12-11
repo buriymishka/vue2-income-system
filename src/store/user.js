@@ -4,9 +4,9 @@ import router from '@/router'
 
 export default {
   namespaced: true,
-  state: {
+  state: () => ( {
     user: null
-  },
+  }),
   getters: {
     user: state => state.user
   },

@@ -2,10 +2,10 @@ import * as categoriesAPI from '@/api/categories'
 
 export default {
   namespaced: true,
-  state: {
+  state: () => ( {
     categories: null,
     currentCategory: null
-  },
+  }),
   getters: {
     categories: state => state.categories,
     currentCategory: state => state.currentCategory

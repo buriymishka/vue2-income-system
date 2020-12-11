@@ -4,7 +4,7 @@
   "Analytics": "Аналитика",
   "Records": "Записи",
   "NewRecord": "Новая запись",
-  "Categories": "Категория",
+  "Categories": "Категории",
   "Settings": "Настройки",
   "Title": "Название",
   "Category": "Категория",
@@ -45,5 +45,6 @@
   "HowDidYouDoThat": "Как Вы это сделали?",
   "EmailAlreadyExists": "Такая эл. почта уже занята",
   "NoUserWithThisEmail": "Нет пользователя с такой почтой",
-  "YouMustAuthenticateFirst": "Сначала авторизуйтесь"
+  "YouMustAuthenticateFirst": "Сначала авторизуйтесь",
+  "Request failed with status code 500": "Ошибка сервера. Попробуйте позже"
 }
