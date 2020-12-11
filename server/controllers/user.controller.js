@@ -6,7 +6,7 @@ const db = require('../db')
 module.exports.signIn = async (req, res) => {
 
   try {
-    let users = await db.query(`SELECT * FROM "user" WHERE email = $1`, [req.body.email])
+    let users = await db.query(`SELECT * FROM "users" WHERE email = $1`, [req.body.email])
     if (users.rows[0]) {
       let user = users.rows[0]
       let isPassCorrect = await bcrypt.compare(req.body.password, user.password)
@@ -38,7 +38,7 @@ module.exports.load = async (req, res) => {
   let token = getAccessTokenPayload(req.headers.access_token)
 
   try {
-    let users = await db.query(`SELECT name, email, locale FROM "user" WHERE id = $1`, [token.id])
+    let users = await db.query(`SELECT name, email, locale FROM "users" WHERE id = $1`, [token.id])
     if (users.rows[0]) {
       let user = users.rows[0]
       res.json(user)
@@ -47,6 +47,7 @@ module.exports.load = async (req, res) => {
       res.status(404).json({ message: 'HowDidYouDoThat' })
     }
   } catch (e) {
+    console.log(e)
     res.status(500).json(e)
   }
 }
@@ -54,13 +55,13 @@ module.exports.load = async (req, res) => {
 module.exports.signUp = async (req, res) => {
 
   try {
-    let users = await db.query(`SELECT * FROM "user" WHERE email = $1`, [req.body.email])
+    let users = await db.query(`SELECT * FROM "users" WHERE email = $1`, [req.body.email])
     if (users.rows.length) {
       res.status(409).json({ message: 'EmailAlreadyExists' })
       return
     }
 
-    let newUser = await db.query(`INSERT INTO "user" (name, email, password) values ($1, $2, $3) RETURNING id, name, email, locale`, [req.body.name, req.body.email, createPassword(req.body.password)])
+    let newUser = await db.query(`INSERT INTO "users" (name, email, password) values ($1, $2, $3) RETURNING id, name, email, locale`, [req.body.name, req.body.email, createPassword(req.body.password)])
     let user = newUser.rows[0]
 
     const generatedRefreshToken = generateRefreshToken()
@@ -77,18 +78,18 @@ module.exports.signUp = async (req, res) => {
 module.exports.update = async (req, res) => {
   let token = getAccessTokenPayload(req.headers.access_token)
   try {
-    let users = await db.query(`SELECT * FROM "user" WHERE email = $1 AND id <> $2`, [req.body.email, token.id])
+    let users = await db.query(`SELECT * FROM "users" WHERE email = $1 AND id <> $2`, [req.body.email, token.id])
     if (users.rows.length) {
       res.status(409).json({ message: 'EmailAlreadyExists' })
       return
     }
     if (req.body.newPassword) {
-      let newUser = await db.query(`UPDATE "user" SET name = $1, email = $2, locale = $3, password = $4 WHERE id = $5 RETURNING name, email`,
+      let newUser = await db.query(`UPDATE "users" SET name = $1, email = $2, locale = $3, password = $4 WHERE id = $5 RETURNING name, email`,
         [req.body.name, req.body.email, req.body.locale, createPassword(req.body.newPassword), token.id]
       )
       res.json(newUser.rows[0])
     } else {
-      let newUser = await db.query(`UPDATE "user" SET name = $1, email = $2, locale = $3 WHERE id = $4 RETURNING name, email, locale`,
+      let newUser = await db.query(`UPDATE "users" SET name = $1, email = $2, locale = $3 WHERE id = $4 RETURNING name, email, locale`,
         [req.body.name, req.body.email, req.body.locale, token.id]
       )
       res.json(newUser.rows[0])
@@ -101,13 +102,13 @@ module.exports.update = async (req, res) => {
 module.exports.recover = async (req, res) => {
 
   try {
-    let users = await db.query(`SELECT * FROM "user" WHERE email = $1`, [req.body.email])
+    let users = await db.query(`SELECT * FROM "users" WHERE email = $1`, [req.body.email])
     if (users.rows[0]) {
       const newPasswordPlain = generatePassword()
       const newPasswordHash = createPassword(newPasswordPlain)
       await sendMail(req.body.email, newPasswordPlain)
       let user = users.rows[0]
-      await db.query(`UPDATE "user" SET password = $1 WHERE id = $2`, [newPasswordHash, user.id])
+      await db.query(`UPDATE "users" SET password = $1 WHERE id = $2`, [newPasswordHash, user.id])
       res.json({})
     } else {
       res.status(404).json({ message: 'NoUserWithThisEmail' })

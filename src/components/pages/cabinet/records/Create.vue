@@ -34,6 +34,7 @@
         <v-select
           :items="categories"
           v-model="categoryId"
+          :rules="[v => !!v || loc('NoCategory')]"
           :label="loc('Category')"
           item-text="title"
           item-value="id"

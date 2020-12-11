@@ -9,7 +9,7 @@ module.exports.refresh = async (req, res) => {
       let tokenDate = token.expires
       if (tokenDate > (Date.now() - 2000)) {
 
-        let user = await db.query(`SELECT id FROM "user" WHERE id = $1`, [token.user_id])
+        let user = await db.query(`SELECT id FROM "users" WHERE id = $1`, [token.user_id])
         user = user.rows[0]
         if (user) {
           let AC = generateAccessToken({ id: user.id })
@@ -28,6 +28,7 @@ module.exports.refresh = async (req, res) => {
       res.json({ res: false })
     }
   } catch (e) {
+    console.log(e)
     res.status(500).json(e)
   }
 
