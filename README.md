@@ -1,3 +1,5 @@
+![GitHub Logo](https://github.com/buriymishka/vue2/blob/master/crm.gif)
+
 # vue2
 
 ## Project setup
